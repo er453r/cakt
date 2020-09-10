@@ -1,7 +1,7 @@
 package com.er453r.ca
 
 class Cell(private val space: Space) {
-    private var state = 0
+    var state = 0
     private var tempState = 0
 
     fun process(){
@@ -14,6 +14,8 @@ class Cell(private val space: Space) {
             state == 0 && liveNeighbours == 3 -> 1
             else -> 0
         }
+
+//        println("${space.findCell(this)} - $liveNeighbours neighbors, state $state -> $tempState")
     }
 
     fun step(){

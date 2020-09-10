@@ -1,5 +1,6 @@
+import com.er453r.ca.Test
 import kotlinx.browser.document
 
 fun main() {
-    document.write("Hello, world!")
+    document.addEventListener("DOMContentLoaded", { Test() })
 }
