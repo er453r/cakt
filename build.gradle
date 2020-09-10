@@ -16,7 +16,7 @@ dependencies {
 }
 
 kotlin {
-    js(IR) {
+    js {
         browser {
             webpackTask {
                 cssSupport.enabled = true

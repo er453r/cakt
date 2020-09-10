@@ -7,6 +7,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.w3c.dom.Element
 import kotlinx.browser.document
+import org.w3c.dom.HTMLInputElement
 import kotlin.js.Date
 
 class Test {
@@ -22,19 +23,26 @@ class Test {
 
     private val cells:List<Cell>
 
+    val render:HTMLInputElement
+
     init {
-        println("CA Started!")
+        console.log("CA Started!")
 
         stats = document.getElementById("fps")!!
 
-        val width = 64
-        val height = 64
+        render = (document.getElementById("render") as HTMLInputElement?)!!
+
+        val width = 3 * 32
+        val height = 3 * 32
 
         ca = CA(width, height)
 
         cells = ca.cells
 
         val mid = (width * height + width) / 2
+
+        cells[mid - width - width - 1].state = 1
+        cells[mid - width + 2].state = 1
         cells[mid].state = 1
         cells[mid + 1].state = 1
         cells[mid + 2].state = 1
@@ -53,7 +61,8 @@ class Test {
 
         ca.step()
 
-        output.generic(cells) { it.state.toFloat() }
+        if(render.checked)
+            output.generic(cells) { it.state.toFloat() }
 
         iter++
 
