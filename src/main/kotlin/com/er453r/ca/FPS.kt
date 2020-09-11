@@ -4,11 +4,12 @@ import kotlin.js.Date
 
 class FPS {
     private var frames: Int = 0
-    private var fps: Double = 0.0
+
+    var fps: Double = 0.0
 
     private var past: Double = Date.now()
 
-    fun update(): Double {
+    fun update() {
         frames++
 
         val now = Date.now()
@@ -20,7 +21,5 @@ class FPS {
             past = now
             frames = 0
         }
-
-        return fps
     }
 }

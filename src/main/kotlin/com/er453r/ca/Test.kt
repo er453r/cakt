@@ -32,8 +32,8 @@ class Test {
 
         render = (document.getElementById("render") as HTMLInputElement?)!!
 
-        val width = 3 * 32
-        val height = 3 * 32
+        val width = 1 * 32
+        val height = 1 * 32
 
         ca = CA(width, height)
 
@@ -57,21 +57,21 @@ class Test {
     }
 
     private fun loop() {
-        println("Step!")
+        for (n in 0..20){
+            ca.step()
 
-        ca.step()
+            iter++
+
+            fps.update()
+        }
 
         if(render.checked)
             output.generic(cells) { it.state.toFloat() }
 
-        iter++
+        if (iter % 10 == 0)
+            stats.innerHTML = "FPS ${fps.fps.format(2)}"
 
-        if (iter % 1 == 0)
-            stats.innerHTML = "FPS ${fps.update().format(2)}"
-        else
-            fps.update()
-
-        if (iter < 1000)
+        if (iter < 2000)
             GlobalScope.launch {
                 delay(1)
                 loop()

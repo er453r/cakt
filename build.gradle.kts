@@ -1,18 +1,16 @@
 plugins {
-    id 'org.jetbrains.kotlin.js' version '1.4.0'
+    id("org.jetbrains.kotlin.js") version "1.4.10"
 }
 
-group 'com.er453r.ca'
-version '0.1'
+group = "com.er453r.ca"
+version = "0.1"
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-js"
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9'
-    testImplementation "org.jetbrains.kotlin:kotlin-test-js"
+    implementation(kotlin("stdlib-js"))
 }
 
 kotlin {
