@@ -2,17 +2,20 @@ package com.er453r.ui
 
 import kotlinx.browser.document
 import kotlinx.css.CSSBuilder
-import kotlinx.html.HtmlBlockTag
+import kotlinx.html.TagConsumer
 import kotlinx.html.dom.append
 import org.w3c.dom.COMPLETE
 import org.w3c.dom.DocumentReadyState
+import org.w3c.dom.HTMLElement
 
-abstract class UI(private val selector: String) {
-    abstract val root: HtmlBlockTag.() -> Unit
+abstract class UI(private val selector: String = "body") {
+    abstract val root: TagConsumer<HTMLElement>.() -> Unit
 
-    abstract val style: CSSBuilder.() -> Unit
+    open val style: CSSBuilder.() -> Unit = {}
 
     init {
+        console.log("Starting UI")
+
         if (document.readyState == DocumentReadyState.COMPLETE) {
             console.log("Document already loaded, adding UI")
 
@@ -27,13 +30,13 @@ abstract class UI(private val selector: String) {
     }
 
     private fun add() {
-        document.querySelector(selector)?.append { root }
+        document.querySelector(selector)?.append { root() }
 
         console.log("Adding styles...")
 
         document.querySelector("style")!!.innerHTML += CSSBuilder().apply(style).toString()
     }
 
-    fun UI.css(block: CSSBuilder.() -> Unit) = block
-    fun UI.html(element: String, block: HtmlBlockTag.() -> Unit) = block
+    fun css(block: CSSBuilder.() -> Unit) = block
+    fun html(block: TagConsumer<HTMLElement>.() -> Unit) = block
 }

@@ -5,7 +5,7 @@ import kotlinx.html.span
 
 fun main() {
     object : UI("body") {
-        override val root = html("div") {
+        override val root = html {
             h1 {
                 +"This is my first test!"
             }
@@ -27,6 +27,10 @@ fun main() {
             h1 {
                 color = Color.red
             }
+        }
+
+        init {
+            console.log("Starting component")
         }
     }
 }
