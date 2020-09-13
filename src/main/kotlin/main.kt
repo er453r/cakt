@@ -1,31 +1,77 @@
 import com.er453r.ui.UI
 import kotlinx.css.*
-import kotlinx.html.h1
-import kotlinx.html.span
+import kotlinx.html.*
 
 fun main() {
     object : UI("body") {
         override val root = html {
-            h1 {
-                +"This is my first test!"
-            }
+            div(classes = "container") {
+                div(classes = "controls") {
+                    div {
+                        label {
+                            checkBoxInput {
+                                change {
+                                    console.log("Run changed to ${it}!")
+                                }
+                            }
 
-            span {
-                +"This is only a span"
+                            +"Run"
+                        }
+                    }
+
+                    div {
+                        button {
+                            +"Step"
+
+                            click {
+                                console.log("Clicked step!")
+                            }
+                        }
+                    }
+
+                    div {
+                        label {
+                            checkBoxInput {
+                                change {
+                                    console.log("Render changed to ${it}!")
+                                }
+                            }
+
+                            +"Render"
+                        }
+                    }
+
+                    div {
+                        id = "fps"
+                    }
+                }
+                div(classes = "plot") {
+                    h1 {
+                        +"Test"
+                    }
+                }
             }
         }
 
         override val style = css {
             body {
-                margin(0.px)
-
-                fontSize = 2.em
-
-                color = Color.gray
+                margin = "0"
+                padding = "0"
             }
 
-            h1 {
-                color = Color.red
+            rule(".container") {
+                display = Display.flex
+                minHeight = 100.vh
+            }
+
+            rule(".controls") {
+                width = 40.pct
+                backgroundColor = Color.lightGray
+            }
+
+            rule(".plot") {
+                flexGrow = 2.0
+                backgroundColor = Color.darkGray
             }
         }
 
