@@ -46,17 +46,17 @@ abstract class UI(private val selector: String = "body") {
     fun css(block: CSSBuilder.() -> Unit) = block
     fun html(block: TagConsumer<HTMLElement>.() -> Unit) = block
 
-    fun BUTTON.click(block: (Event) -> Unit) {
+    fun BUTTON.click(block: Event.() -> Unit) {
         this.onClickFunction = {
-            block(it)
+            it.apply(block)
         }
     }
 
-    fun INPUT.change(block: (Boolean) -> Unit) {
+    fun INPUT.change(block: Event.(Boolean) -> Unit) {
         onChangeFunction = {
             val element = it.target as HTMLInputElement
 
-            block(element.checked)
+            it.apply { block(element.checked) }
         }
     }
 }
