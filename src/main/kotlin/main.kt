@@ -1,19 +1,19 @@
+import com.er453r.ui.Property
 import com.er453r.ui.UI
+import com.er453r.ui.checkBox
 import kotlinx.css.*
 import kotlinx.html.*
 
 fun main() {
+    val checkedProperty = Property(false)
+
     object : UI("body") {
         override val root = html {
             div(classes = "container") {
                 div(classes = "controls") {
                     div {
                         label {
-                            checkBoxInput {
-                                change {
-                                    console.log("Run changed to ${it}!")
-                                }
-                            }
+                            checkBox(checkedProperty)
 
                             +"Run"
                         }
@@ -31,11 +31,7 @@ fun main() {
 
                     div {
                         label {
-                            checkBoxInput {
-                                change {
-                                    console.log("Render changed to ${it}!")
-                                }
-                            }
+                            checkBox(checkedProperty)
 
                             +"Render"
                         }

@@ -2,9 +2,8 @@ package com.er453r.ui
 
 import kotlinx.browser.document
 import kotlinx.css.CSSBuilder
-import kotlinx.html.BUTTON
-import kotlinx.html.INPUT
-import kotlinx.html.TagConsumer
+import kotlinx.html.*
+import kotlinx.html.attributes.enumEncode
 import kotlinx.html.dom.append
 import kotlinx.html.js.onChangeFunction
 import kotlinx.html.js.onClickFunction
