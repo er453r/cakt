@@ -2,19 +2,12 @@ package com.er453r.ui
 
 import kotlinx.browser.document
 import kotlinx.css.CSSBuilder
-import kotlinx.html.*
-import kotlinx.html.attributes.enumEncode
-import kotlinx.html.dom.append
-import kotlinx.html.js.onChangeFunction
-import kotlinx.html.js.onClickFunction
 import org.w3c.dom.COMPLETE
 import org.w3c.dom.DocumentReadyState
 import org.w3c.dom.HTMLElement
-import org.w3c.dom.HTMLInputElement
-import org.w3c.dom.events.Event
 
 abstract class UI(private val selector: String = "body") {
-    abstract val root: TagConsumer<HTMLElement>.() -> Unit
+    abstract val root: HTMLElement
 
     open val style: CSSBuilder.() -> Unit = {}
 
@@ -35,7 +28,7 @@ abstract class UI(private val selector: String = "body") {
     }
 
     private fun add() {
-        document.querySelector(selector)?.append { root() }
+        document.querySelector(selector)?.append(root)
 
         console.log("Adding styles...")
 
@@ -43,19 +36,25 @@ abstract class UI(private val selector: String = "body") {
     }
 
     fun css(block: CSSBuilder.() -> Unit) = block
-    fun html(block: TagConsumer<HTMLElement>.() -> Unit) = block
+    fun html(elementName: String = "div", block: HTMLElement.() -> Unit): HTMLElement {
+        val element = document.createElement(elementName) as HTMLElement
 
-    fun BUTTON.click(block: Event.() -> Unit) {
-        this.onClickFunction = {
-            it.apply(block)
-        }
+        element.apply(block)
+
+        return element
     }
 
-    fun INPUT.change(block: Event.(Boolean) -> Unit) {
-        onChangeFunction = {
-            val element = it.target as HTMLInputElement
-
-            it.apply { block(element.checked) }
-        }
-    }
+//    fun BUTTON.click(block: Event.() -> Unit) {
+//        this.onClickFunction = {
+//            it.apply(block)
+//        }
+//    }
+//
+//    fun INPUT.change(block: Event.(Boolean) -> Unit) {
+//        onChangeFunction = {
+//            val element = it.target as HTMLInputElement
+//
+//            it.apply { block(element.checked) }
+//        }
+//    }
 }

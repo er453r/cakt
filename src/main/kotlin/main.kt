@@ -1,8 +1,7 @@
 import com.er453r.ui.Property
 import com.er453r.ui.UI
-import com.er453r.ui.checkBox
+import com.er453r.ui.html.*
 import kotlinx.css.*
-import kotlinx.html.*
 
 fun main() {
     val checkedProperty = Property(false)
@@ -13,15 +12,15 @@ fun main() {
                 div(classes = "controls") {
                     div {
                         label {
-                            checkBox(checkedProperty)
+                            checkbox(checkedProperty)
 
-                            +"Run"
+                            text("Run")
                         }
                     }
 
                     div {
                         button {
-                            +"Step"
+                            text("Step")
 
                             click {
                                 console.log("Clicked step!")
@@ -31,9 +30,9 @@ fun main() {
 
                     div {
                         label {
-                            checkBox(checkedProperty)
+                            checkbox(checkedProperty)
 
-                            +"Render"
+                            text("Render")
                         }
                     }
 
@@ -43,7 +42,7 @@ fun main() {
                 }
                 div(classes = "plot") {
                     h1 {
-                        +"Test"
+                        text("Test")
                     }
                 }
             }

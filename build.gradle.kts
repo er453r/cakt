@@ -13,7 +13,6 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib-js"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9")
-    implementation("org.jetbrains.kotlinx:kotlinx-html-js:0.7.2")
     implementation("org.jetbrains:kotlin-css:1.0.0-pre.114-kotlin-1.4.0")
 }
 
