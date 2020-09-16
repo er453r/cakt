@@ -1,4 +1,4 @@
-package com.er453r.ui
+package com.er453r.ui.properties
 
 import org.w3c.dom.HTMLElement
 

@@ -1,8 +1,8 @@
-import com.er453r.ui.Property
+import com.er453r.ui.properties.Property
 import com.er453r.ui.UI
-import com.er453r.ui.checkbox
+import com.er453r.ui.properties.checkbox
 import com.er453r.ui.html.*
-import com.er453r.ui.textinput
+import com.er453r.ui.properties.textinput
 import kotlinx.css.*
 
 fun main() {
