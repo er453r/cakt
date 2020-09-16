@@ -16,6 +16,10 @@ fun main() {
                     fieldset {
                         legend {
                             text("Controls")
+
+                            style {
+                                color = Color.darkRed
+                            }
                         }
 
                         div {

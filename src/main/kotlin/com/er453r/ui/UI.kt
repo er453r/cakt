@@ -43,18 +43,4 @@ abstract class UI(private val selector: String = "body") {
 
         return element
     }
-
-//    fun BUTTON.click(block: Event.() -> Unit) {
-//        this.onClickFunction = {
-//            it.apply(block)
-//        }
-//    }
-//
-//    fun INPUT.change(block: Event.(Boolean) -> Unit) {
-//        onChangeFunction = {
-//            val element = it.target as HTMLInputElement
-//
-//            it.apply { block(element.checked) }
-//        }
-//    }
 }

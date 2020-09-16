@@ -1,6 +1,7 @@
 package com.er453r.ui.html
 
 import kotlinx.browser.document
+import kotlinx.css.CSSBuilder
 import org.w3c.dom.*
 import org.w3c.dom.events.Event
 
@@ -38,4 +39,8 @@ fun HTMLElement.text(text: String) {
 
 fun HTMLElement.click(block: Event.() -> Unit) {
     this.addEventListener("click", block)
+}
+
+fun HTMLElement.style(block: CSSBuilder.() -> Unit){
+    this.setAttribute("style", CSSBuilder().apply(block).toString())
 }
