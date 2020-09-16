@@ -1,61 +1,62 @@
 package com.er453r.ui
 
+import com.er453r.ui.html.checkbox
+import com.er453r.ui.html.textinput
+import org.w3c.dom.HTMLElement
 import org.w3c.dom.HTMLInputElement
+import org.w3c.dom.events.Event
 
 class Property<T>(initialValue: T) {
     private val listeners: MutableList<PropertyListener<T>> = mutableListOf()
 
-    var skipListener:PropertyListener<T>? = null
+    var skipElement: HTMLElement? = null
 
     var value: T = initialValue
         set(newValue) {
             field = newValue
 
-            listeners.filter { it != skipListener }.forEach { it.block(field) }
+            listeners.filter { skipElement != it.element }.forEach { it.listener(field) }
 
-            skipListener = null
+            skipElement = null
         }
 
     operator fun plusAssign(newValue: T) {
         value = newValue
     }
 
-    fun addListener(listenerHolder: PropertyListener<T>) = listeners.add(listenerHolder)
+    fun addListener(listener: PropertyListener<T>) = listeners.add(listener)
 }
 
-//fun INPUT.onChange(property: Property<Boolean>) {
-//    this.consumer.onTagEvent(this, "ready") {
-//        val element = it.target as HTMLInputElement
-//
-//        console.log("loaded dom for ${element.tagName}")
-//    }
-//
-//    val listenerHolder = PropertyListener<Boolean>{
-//        console.log("Change listener $it")
-//
-//        //this.checked = it
-//    }
-//
-//    property.addListener(listenerHolder)
-//
-//    onReadyStateChangeFunction = {
-//        console.log("ready state change!")
-//    }
-//
-//    onLoadFunction = {
-//        console.log("on load!")
-//    }
-//
-//    this.consumer.onTagEvent(this, "onchange") {
-//        val element = it.target as HTMLInputElement
-//
-//        console.log("html element check ${element.checked}")
-//
-//        property.skipListener = listenerHolder
-//        property.value = element.checked
-//    }
-//}
-//
-//fun FlowOrInteractiveOrPhrasingContent.checkBox(property: Property<Boolean>) = checkBoxInput {
-//    onChange(property)
-//}
+fun HTMLInputElement.onChecked(property: Property<Boolean>) {
+    val listener = PropertyListener<Boolean>(this) { this.checked = it }
+
+    property.addListener(listener)
+
+    addEventListener("change", {
+        property.skipElement = this
+        property.value = this.checked
+    })
+}
+
+fun HTMLInputElement.onChange(property: Property<String>) {
+    val listener = PropertyListener<String>(this) { this.value = it }
+
+    property.addListener(listener)
+
+    val changeListener: (Event) -> Unit = {
+        property.skipElement = this
+
+        property.value = this.value
+    }
+
+    addEventListener("keyup", changeListener)
+    addEventListener("change", changeListener)
+}
+
+fun HTMLElement.checkbox(property: Property<Boolean>) = checkbox {
+    onChecked(property)
+}
+
+fun HTMLElement.textinput(property: Property<String>) = textinput {
+    onChange(property)
+}

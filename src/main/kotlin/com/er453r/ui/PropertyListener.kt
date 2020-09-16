@@ -1,3 +1,5 @@
 package com.er453r.ui
 
-class PropertyListener<T>(val block:(T) -> Unit)
+import org.w3c.dom.HTMLElement
+
+class PropertyListener<T>(val element:HTMLElement, val listener: (T) -> Unit)

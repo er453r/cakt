@@ -1,43 +1,66 @@
 import com.er453r.ui.Property
 import com.er453r.ui.UI
+import com.er453r.ui.checkbox
 import com.er453r.ui.html.*
+import com.er453r.ui.textinput
 import kotlinx.css.*
 
 fun main() {
     val checkedProperty = Property(false)
+    val textProperty = Property("")
 
     object : UI("body") {
         override val root = html {
             div(classes = "container") {
                 div(classes = "controls") {
-                    div {
-                        label {
-                            checkbox(checkedProperty)
-
-                            text("Run")
+                    fieldset {
+                        legend {
+                            text("Controls")
                         }
-                    }
 
-                    div {
-                        button {
-                            text("Step")
+                        div {
+                            label {
+                                checkbox(checkedProperty)
 
-                            click {
-                                console.log("Clicked step!")
+                                text("Run")
                             }
                         }
-                    }
 
-                    div {
-                        label {
-                            checkbox(checkedProperty)
+                        div {
+                            button {
+                                text("Step")
 
-                            text("Render")
+                                click {
+                                    console.log("Clicked step!")
+                                }
+                            }
+                        }
+
+                        div {
+                            label {
+                                checkbox(checkedProperty)
+
+                                text("Render")
+                            }
+                        }
+
+                        div{
+                            textinput(textProperty)
+                        }
+
+                        div{
+                            textinput(textProperty)
                         }
                     }
 
-                    div {
-                        id = "fps"
+                    fieldset {
+                        legend {
+                            text("Stats")
+                        }
+
+                        div {
+                            id = "fps"
+                        }
                     }
                 }
                 div(classes = "plot") {
