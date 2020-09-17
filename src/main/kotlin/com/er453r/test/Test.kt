@@ -20,6 +20,9 @@ class Test : UI() {
     private val iteration = Property(0)
     private val fpsView = Property("")
 
+    private val width = Property(128)
+    private val height = Property(128)
+
     override val root = html {
         div(classes = "container") {
             div(classes = "controls") {
@@ -104,16 +107,16 @@ class Test : UI() {
         }
     }
 
-    private val width = 1 * 32
-    private val height = 1 * 32
-
     private val fpsCounter: FPS = FPS()
-    private val ca = CA(width, height)
+    private val ca = CA(width.value, height.value)
     private var output: Image? = null
     private val cells: List<Cell> = ca.cells
 
     override fun onInit() {
         console.log("CA Started!")
+
+        val width = this.width.value
+        val height = this.height.value
 
         val mid = (width * height + width) / 2
 
