@@ -1,23 +1,31 @@
 package com.er453r.plot
 
+import kotlinx.browser.document
 import org.khronos.webgl.Uint8ClampedArray
 import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
+import org.w3c.dom.HTMLElement
 import org.w3c.dom.ImageData
-import kotlinx.browser.document
 
-class Image(width: Int, height: Int, private val colormap: Colormap, selector: String = "body") {
+class Image(width: Int, height: Int, private val colormap: Colormap, selector: String? = null, root: HTMLElement? = null) {
     private var image: ImageData
     private var context: CanvasRenderingContext2D
+    private val canvas: HTMLCanvasElement
 
     init {
-        val canvas: HTMLCanvasElement = document.createElement("canvas") as HTMLCanvasElement
+        canvas = document.createElement("canvas") as HTMLCanvasElement
         canvas.width = width
         canvas.height = height
         context = canvas.getContext("2d")!! as CanvasRenderingContext2D
         image = context.getImageData(0.0, 0.0, width.toDouble(), height.toDouble())
 
-        document.querySelector(selector)!!.appendChild(canvas)
+        selector?.let { attach(selector = it) }
+        root?.let { attach(root = it) }
+    }
+
+    fun attach(selector: String? = null, root: HTMLElement? = null){
+        selector?.let { document.querySelector(it)!!.appendChild(canvas) }
+        root?.let { root.appendChild(canvas) }
     }
 
     fun <T> generic(vector: List<T>, collector: (T) -> Float) {

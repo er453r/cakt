@@ -21,4 +21,8 @@ class Property<T>(initialValue: T) {
     }
 
     fun addListener(listener: PropertyListener<T>) = listeners.add(listener)
+
+    fun onChange(block:(T)->Unit){
+        addListener(PropertyListener(listener = block))
+    }
 }

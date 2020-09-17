@@ -1,29 +1,26 @@
 package com.er453r.ui
 
 import kotlinx.browser.document
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import kotlinx.css.CSSBuilder
-import org.w3c.dom.COMPLETE
-import org.w3c.dom.DocumentReadyState
 import org.w3c.dom.HTMLElement
 
 abstract class UI(private val selector: String = "body") {
     abstract val root: HTMLElement
+
+    open fun onInit() {}
 
     open val style: CSSBuilder.() -> Unit = {}
 
     init {
         console.log("Starting UI")
 
-        if (document.readyState == DocumentReadyState.COMPLETE) {
-            console.log("Document already loaded, adding UI")
-
+        // let the child properties initialize
+        GlobalScope.launch {
+            delay(1)
             add()
-        } else {
-            document.addEventListener("DOMContentLoaded", {
-                console.log("Document loaded, starting UI")
-
-                add()
-            })
         }
     }
 
@@ -33,6 +30,8 @@ abstract class UI(private val selector: String = "body") {
         console.log("Adding styles...")
 
         document.querySelector("style")!!.innerHTML += CSSBuilder().apply(style).toString()
+
+        onInit()
     }
 
     fun css(block: CSSBuilder.() -> Unit) = block

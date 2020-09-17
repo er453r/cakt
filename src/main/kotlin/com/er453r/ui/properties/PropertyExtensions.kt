@@ -7,6 +7,8 @@ import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.events.Event
 
 fun HTMLInputElement.onChecked(property: Property<Boolean>) {
+    this.checked = property.value
+
     val listener = PropertyListener<Boolean>(this) { this.checked = it }
 
     property.addListener(listener)
