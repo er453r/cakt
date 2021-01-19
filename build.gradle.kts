@@ -1,5 +1,6 @@
 plugins {
-    id("org.jetbrains.kotlin.js") version "1.4.10"
+    id("org.jetbrains.kotlin.js") version "1.4.21"
+    id("com.github.ben-manes.versions") version "0.36.0"
 }
 
 group = "com.er453r.ca"
@@ -12,28 +13,12 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib-js"))
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9")
-    implementation("org.jetbrains:kotlin-css:1.0.0-pre.114-kotlin-1.4.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
+    implementation("org.jetbrains:kotlin-css:1.0.0-pre.139-kotlin-1.4.21")
 }
 
 kotlin {
     js {
-        browser {
-            webpackTask {
-                cssSupport.enabled = true
-            }
-
-            runTask {
-                cssSupport.enabled = true
-            }
-
-            testTask {
-                useKarma {
-                    useChromeHeadless()
-                    webpackConfig.cssSupport.enabled = true
-                }
-            }
-        }
-        binaries.executable()
+        browser()
     }
 }
