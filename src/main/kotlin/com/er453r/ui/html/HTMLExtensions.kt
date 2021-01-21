@@ -15,6 +15,8 @@ fun HTMLElement.legend(classes: String? = null, attributes: Map<String, String>?
 
 fun HTMLElement.checkbox(classes: String? = null, attributes: Map<String, String>? = null, block: HTMLInputElement.() -> Unit = {}) = input(classes, attributes.extend(mapOf("type" to "checkbox")), block)
 fun HTMLElement.textinput(classes: String? = null, attributes: Map<String, String>? = null, block: HTMLInputElement.() -> Unit = {}) = input(classes, attributes.extend(mapOf("type" to "text")), block)
+fun HTMLElement.select2(classes: String? = null, attributes: Map<String, String>? = null, block: HTMLSelectElement.() -> Unit = {}) = element("select", classes, attributes, block)
+fun HTMLElement.option(value:String, classes: String? = null, attributes: Map<String, String>? = null, block: HTMLInputElement.() -> Unit = {}) = element("option", classes, attributes.extend(mapOf("value" to value)), block)
 
 fun Map<String, String>?.extend(extends: Map<String, String>) = (this?.toMutableMap() ?: mutableMapOf()).apply { putAll(extends) }
 

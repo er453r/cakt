@@ -2,6 +2,7 @@ package com.er453r.test
 
 import com.er453r.ca.CA
 import com.er453r.ca.implementations.gameoflife.GameOfLifeCell
+import com.er453r.ca.implementations.random.RandomCell
 import com.er453r.ca.spaces.Finite2dGridSpace
 import com.er453r.plot.Image
 import com.er453r.plot.colormaps.Inferno
@@ -9,6 +10,7 @@ import com.er453r.ui.UI
 import com.er453r.ui.html.*
 import com.er453r.ui.properties.Property
 import com.er453r.ui.properties.checkbox
+import com.er453r.ui.properties.select
 import com.er453r.utils.FPS
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -21,8 +23,29 @@ class Test : UI() {
     private val iteration = Property(0)
     private val fpsView = Property("")
 
-    private val width = Property(128)
-    private val height = Property(128)
+    private val typeSelected = Property("")
+
+    private val width = Property(32)
+    private val height = Property(32)
+
+    private val tests = mapOf(
+        "gameOfLife" to TestDefinition(
+            name = "Game of life",
+            description = "Classic game of life",
+            space = Finite2dGridSpace<GameOfLifeCell>(width.value, height.value, static = true) {
+                GameOfLifeCell(0, this)
+            },
+            stateConverter = { it.toFloat() },
+        ),
+        "random" to TestDefinition(
+            name = "Random",
+            description = "Random values, just showing of the UI",
+            space = Finite2dGridSpace<RandomCell>(width.value, height.value, static = true) {
+                RandomCell()
+            },
+            stateConverter = { it.toFloat() },
+        ),
+    )
 
     override val root = html {
         div(classes = "container") {
@@ -30,6 +53,16 @@ class Test : UI() {
                 fieldset {
                     legend {
                         text("Controls")
+                    }
+
+                    div {
+                        select(typeSelected) {
+                            for (test in tests.entries) {
+                                option(test.key) {
+                                    text(test.value.name)
+                                }
+                            }
+                        }
                     }
 
                     div {
@@ -109,12 +142,8 @@ class Test : UI() {
     }
 
     private val fpsCounter: FPS = FPS()
-    private val space = Finite2dGridSpace<GameOfLifeCell>(width.value, height.value, static = true){
-        GameOfLifeCell(0, this)
-    }
-    private val ca = CA(space)
+    private var ca: CA<*>? = null
     private var output: Image? = null
-    private val cells = ca.space.cells()
 
     override fun onInit() {
         console.log("CA Started!")
@@ -122,30 +151,60 @@ class Test : UI() {
         val width = this.width.value
         val height = this.height.value
 
-        val mid = (width * height + width) / 2
-
-        cells[mid - width - width - 1].state = 1
-        cells[mid - width + 2].state = 1
-        cells[mid].state = 1
-        cells[mid + 1].state = 1
-        cells[mid + 2].state = 1
-
         output = Image(width, height, Inferno(), selector = ".plot")
-
-        output?.generic(cells) { it.state.toFloat() }
 
         running.onChange {
             if (it) loop()
         }
+
+        typeSelected.onChange {
+            console.log("Changed value to $it")
+
+            init(it)
+        }
+    }
+
+    var update: (() -> Unit)? = null
+
+    private fun init(id: String) {
+        console.log("Loading $id...")
+
+        iteration.value = 0
+
+        tests[id]?.let { test ->
+            ca = CA(test.space)
+
+            update = {
+                val cells = test.space.cells()
+                val values = cells.map { test.stateConverter(it.state) }
+
+                output?.generic(values) { it }
+            }
+        }
+
+//        if(id == "gameOfLife"){
+//            val width = this.width.value
+//            val height = this.height.value
+//
+//            val mid = (width * height + width) / 2
+//
+//            cells[mid - width - width - 1].state = 1
+//            cells[mid - width + 2].state = 1
+//            cells[mid].state = 1
+//            cells[mid + 1].state = 1
+//            cells[mid + 2].state = 1
+//        }
     }
 
     private fun step() {
-        ca.step()
+        ca?.let {
+            it.step()
 
-        iteration.value++
+            iteration.value++
 
-        if (render.value)
-            output?.generic(cells) { it.state.toFloat() }
+            if (render.value)
+                update?.invoke()
+        }
     }
 
     private fun loop() {
