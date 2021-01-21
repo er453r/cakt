@@ -11,6 +11,7 @@ import com.er453r.ui.html.*
 import com.er453r.ui.properties.Property
 import com.er453r.ui.properties.checkbox
 import com.er453r.ui.properties.select
+import com.er453r.ui.properties.text
 import com.er453r.utils.FPS
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -99,6 +100,8 @@ class Test : UI() {
 
                     div {
                         id = "fps"
+
+                        text(fpsView)
                     }
                 }
             }
@@ -210,6 +213,7 @@ class Test : UI() {
     private fun loop() {
         step()
 
+        fpsCounter.update()
         fpsView.value = "FPS ${fpsCounter.fps.format(2)}"
 
         if (running.value) {

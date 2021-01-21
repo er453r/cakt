@@ -35,8 +35,13 @@ fun <T : HTMLElement> HTMLElement.element(elementName: String, classes: String? 
     return element
 }
 
-fun HTMLElement.text(text: String) {
-    this.appendChild(document.createTextNode(text))
+fun HTMLElement.text(text: String = "", block: Text.() -> Unit = {}):Text {
+    val element = document.createTextNode(text)
+
+    element.apply(block)
+    this.appendChild(element)
+
+    return element
 }
 
 fun HTMLElement.click(block: Event.() -> Unit) {
