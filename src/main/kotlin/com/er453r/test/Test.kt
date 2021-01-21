@@ -1,14 +1,13 @@
 package com.er453r.test
 
-import com.er453r.ca.CA
-import com.er453r.ca.Cell
-import com.er453r.ca.FPS
+import com.er453r.ca.implementations.gameoflife.gameOfLife
 import com.er453r.plot.Image
 import com.er453r.plot.colormaps.Inferno
 import com.er453r.ui.UI
 import com.er453r.ui.html.*
 import com.er453r.ui.properties.Property
 import com.er453r.ui.properties.checkbox
+import com.er453r.utils.FPS
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -108,9 +107,9 @@ class Test : UI() {
     }
 
     private val fpsCounter: FPS = FPS()
-    private val ca = CA(width.value, height.value)
+    private val ca = gameOfLife(width.value, height.value)
     private var output: Image? = null
-    private val cells: List<Cell> = ca.cells
+    private val cells = ca.space.cells()
 
     override fun onInit() {
         console.log("CA Started!")
@@ -147,7 +146,7 @@ class Test : UI() {
     private fun loop() {
         step()
 
-//        fpsView.value = "FPS ${fps.fps.format(2)}"
+        fpsView.value = "FPS ${fpsCounter.fps.format(2)}"
 
         if (running.value) {
             GlobalScope.launch {

@@ -1,10 +1,9 @@
 package com.er453r.ca
 
-class CA(width:Int, height:Int) {
-    private val space = Space(width, height, static = true)
-    val cells = space.cells()
-
+class CA<SPACE:Space<out Cell<*>>>(val space:SPACE) {
     fun step(){
+        val cells = space.cells()
+
         cells.forEach {
             it.process()
         }
