@@ -1,6 +1,8 @@
 package com.er453r.test
 
-import com.er453r.ca.implementations.gameoflife.gameOfLife
+import com.er453r.ca.CA
+import com.er453r.ca.implementations.gameoflife.GameOfLifeCell
+import com.er453r.ca.spaces.Finite2dGridSpace
 import com.er453r.plot.Image
 import com.er453r.plot.colormaps.Inferno
 import com.er453r.ui.UI
@@ -107,7 +109,10 @@ class Test : UI() {
     }
 
     private val fpsCounter: FPS = FPS()
-    private val ca = gameOfLife(width.value, height.value)
+    private val space = Finite2dGridSpace<GameOfLifeCell>(width.value, height.value, static = true){
+        GameOfLifeCell(0, this)
+    }
+    private val ca = CA(space)
     private var output: Image? = null
     private val cells = ca.space.cells()
 
