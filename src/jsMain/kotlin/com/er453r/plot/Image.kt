@@ -10,10 +10,9 @@ import org.w3c.dom.ImageData
 class Image(width: Int, height: Int, private val colormap: Colormap, selector: String? = null, root: HTMLElement? = null) {
     private var image: ImageData
     private var context: CanvasRenderingContext2D
-    private val canvas: HTMLCanvasElement
+    private val canvas: HTMLCanvasElement = document.createElement("canvas") as HTMLCanvasElement
 
     init {
-        canvas = document.createElement("canvas") as HTMLCanvasElement
         canvas.width = width
         canvas.height = height
         context = canvas.getContext("2d")!! as CanvasRenderingContext2D
@@ -23,7 +22,7 @@ class Image(width: Int, height: Int, private val colormap: Colormap, selector: S
         root?.let { attach(root = it) }
     }
 
-    fun attach(selector: String? = null, root: HTMLElement? = null){
+    private fun attach(selector: String? = null, root: HTMLElement? = null){
         selector?.let { document.querySelector(it)!!.appendChild(canvas) }
         root?.let { root.appendChild(canvas) }
     }

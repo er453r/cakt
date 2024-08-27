@@ -1,7 +1,7 @@
 package com.er453r.ui.html
 
 import kotlinx.browser.document
-import kotlinx.css.CSSBuilder
+import kotlinx.css.CssBuilder
 import org.w3c.dom.*
 import org.w3c.dom.events.Event
 
@@ -16,13 +16,13 @@ fun HTMLElement.legend(classes: String? = null, attributes: Map<String, String>?
 fun HTMLElement.checkbox(classes: String? = null, attributes: Map<String, String>? = null, block: HTMLInputElement.() -> Unit = {}) = input(classes, attributes.extend(mapOf("type" to "checkbox")), block)
 fun HTMLElement.textinput(classes: String? = null, attributes: Map<String, String>? = null, block: HTMLInputElement.() -> Unit = {}) = input(classes, attributes.extend(mapOf("type" to "text")), block)
 fun HTMLElement.select2(classes: String? = null, attributes: Map<String, String>? = null, block: HTMLSelectElement.() -> Unit = {}) = element("select", classes, attributes, block)
-fun HTMLElement.option(value:String, classes: String? = null, attributes: Map<String, String>? = null, block: HTMLInputElement.() -> Unit = {}) = element("option", classes, attributes.extend(mapOf("value" to value)), block)
+fun HTMLElement.option(value: String, classes: String? = null, attributes: Map<String, String>? = null, block: HTMLInputElement.() -> Unit = {}) = element("option", classes, attributes.extend(mapOf("value" to value)), block)
 
 fun Map<String, String>?.extend(extends: Map<String, String>) = (this?.toMutableMap() ?: mutableMapOf()).apply { putAll(extends) }
 
 fun HTMLElement.h1(classes: String? = null, attributes: Map<String, String>? = null, block: HTMLHeadingElement.() -> Unit = {}) = element("h1", classes, attributes, block)
 
-fun <T : HTMLElement> HTMLElement.element(elementName: String, classes: String? = null, attributes: Map<String, String>? = null, block: T.() -> Unit = {}):T {
+fun <T : HTMLElement> HTMLElement.element(elementName: String, classes: String? = null, attributes: Map<String, String>? = null, block: T.() -> Unit = {}): T {
     val element = document.createElement(elementName).unsafeCast<T>()
 
     val attrs = classes?.let { attributes.extend(mapOf("class" to it)) } ?: attributes
@@ -35,7 +35,7 @@ fun <T : HTMLElement> HTMLElement.element(elementName: String, classes: String? 
     return element
 }
 
-fun HTMLElement.text(text: String = "", block: Text.() -> Unit = {}):Text {
+fun HTMLElement.text(text: String = "", block: Text.() -> Unit = {}): Text {
     val element = document.createTextNode(text)
 
     element.apply(block)
@@ -48,6 +48,6 @@ fun HTMLElement.click(block: Event.() -> Unit) {
     this.addEventListener("click", block)
 }
 
-fun HTMLElement.style(block: CSSBuilder.() -> Unit){
-    this.setAttribute("style", CSSBuilder().apply(block).toString())
+fun HTMLElement.style(block: CssBuilder.() -> Unit) {
+    this.setAttribute("style", CssBuilder().apply(block).toString())
 }

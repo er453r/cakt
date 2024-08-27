@@ -1,10 +1,8 @@
 package com.er453r.ui
 
 import kotlinx.browser.document
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.css.CSSBuilder
+import kotlinx.coroutines.*
+import kotlinx.css.CssBuilder
 import org.w3c.dom.HTMLElement
 
 abstract class UI(private val selector: String = "body") {
@@ -12,13 +10,13 @@ abstract class UI(private val selector: String = "body") {
 
     open fun onInit() {}
 
-    open val style: CSSBuilder.() -> Unit = {}
+    open val style: CssBuilder.() -> Unit = {}
 
     init {
         console.log("Starting UI")
 
         // let the child properties initialize
-        GlobalScope.launch {
+        CoroutineScope(Dispatchers.Default).launch {
             delay(1)
             add()
         }
@@ -29,12 +27,12 @@ abstract class UI(private val selector: String = "body") {
 
         console.log("Adding styles...")
 
-        document.querySelector("style")!!.innerHTML += CSSBuilder().apply(style).toString()
+        document.querySelector("style")!!.innerHTML += CssBuilder().apply(style).toString()
 
         onInit()
     }
 
-    fun css(block: CSSBuilder.() -> Unit) = block
+    fun css(block: CssBuilder.() -> Unit) = block
     fun html(elementName: String = "div", block: HTMLElement.() -> Unit): HTMLElement {
         val element = document.createElement(elementName) as HTMLElement
 

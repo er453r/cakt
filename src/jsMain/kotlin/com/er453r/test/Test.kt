@@ -13,9 +13,7 @@ import com.er453r.ui.properties.checkbox
 import com.er453r.ui.properties.select
 import com.er453r.ui.properties.text
 import com.er453r.utils.FPS
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import kotlinx.css.*
 
 class Test : UI() {
@@ -122,8 +120,8 @@ class Test : UI() {
 
     override val style = css {
         body {
-            margin(1.em)
-            padding(1.em)
+            margin = Margin(1.em)
+            padding = Padding(1.em)
             backgroundColor = Color("#101010")
             borderColor = Color.whiteSmoke
             color = Color.whiteSmoke
@@ -167,7 +165,7 @@ class Test : UI() {
         }
     }
 
-    var update: (() -> Unit)? = null
+    private var update: (() -> Unit)? = null
 
     private fun init(id: String) {
         console.log("Loading $id...")
@@ -217,12 +215,12 @@ class Test : UI() {
         fpsView.value = "FPS ${fpsCounter.fps.format(2)}"
 
         if (running.value) {
-            GlobalScope.launch {
+            CoroutineScope(Dispatchers.Default).launch {
                 delay(1)
                 loop()
             }
         }
     }
 
-    fun Double.format(digits: Int): String = this.asDynamic().toFixed(digits) as String
+    private fun Double.format(digits: Int): String = this.asDynamic().toFixed(digits) as String
 }
